@@ -33,10 +33,6 @@ $ git clone https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 $ cd sky130RTLDesignAndSynthesisWorkshop/verilog_files  
 ```
 
-Explore folders:
-- **lib/**
-- **my_lib/**
-- **verilog_files/**
 
 Simulate design + testbench:
 ```bash
@@ -44,25 +40,28 @@ $ iverilog good_mux.v tb_good_mux.v
 $ ./a.out  
 $ gtkwave tb_good_mux.vcd
 ```
+![Alt Text](Image/gtkwave.png)
 
-Open files in editor (design + testbench side by side):  
+Open files in editor (design + testbench):  
   ```
 $ gvim tb_good_mux.v -o good_mux.v
 ```
+![Alt Text](Image/gvim.png)
+
 ---
 
 ## Introduction to Yosys (Logic Synthesizer)  
 
-Yosys is an **open-source synthesis tool** that converts RTL into a **gate-level netlist** using standard cells.  
-This ensures the Verilog code can be implemented in silicon.  
+Yosys is an **open-source synthesis tool** that converts RTL (Register Transfer Level) Verilog or VHDL code into a gate-level netlist that can be physically implemented on a chip. 
+  
 
 ---
 
 ## Understanding .lib Files  
 
-- A `.lib` file contains **timing, power, and functional data** of cells.  
-- Used by synthesis tools to choose the best cells (slow/fast trade-offs).  
-- Enables balancing **speed, area, and power**.  
+- A .lib file stores cell characteristics, including timing, power, and functionality.
+- Synthesis tools use it to select the most suitable cells for the design.
+- Helps achieve the right trade-off between performance, area, and power.
 
 ---
 
@@ -77,27 +76,33 @@ Read liberty library:
 $ read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib  
 ```
 Read design:  
-```$ read_verilog verilog_files/good_mux.v
+```
+$ read_verilog good_mux.v
 ```
 
 Synthesize top module:  
 ```
 $ synth -top good_mux
 ```
+![Alt Text](Image/yosys.png)
+
 Map to standard cells:  
 ```bash
 $ abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+$show
 ```
+![Alt Text](Image/netlist_schematic.png)
 
 Generate netlist:  
 ```
 $ write_verilog good_mux_netlist.v
 ```
-
+![Alt Text](Image/netlist.png)
 Simplified netlist:  
 ```
 $ write_verilog -noattr good_mux_netlist.v
 ```
+![Alt Text](Image/modified_netlist.png)
 ---
 
 ##  Outcome  

@@ -86,13 +86,8 @@ By the end of **Day 2**, we have:
 **RTL → .lib → Yosys → Synthesized Netlist**
 
 ---
-EOF
 
 
-# --- Git Setup ---
-git init -q
-git add .
-git commit -m "Week1 Day2: Standard Cells, .lib, and Yosys synthesis flow" -q
 
-echo "✅ Week1 Day2 repo created with README, Verilog files, and Git initialized."
+
 

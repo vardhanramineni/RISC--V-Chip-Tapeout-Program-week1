@@ -73,7 +73,7 @@ $./a.out
 $gtkwave tb_dff_sync.vcd
 ```
 
-![Alt Text](Image/flat.png)
+![Alt Text](Image/.png)
 
 ##  Outcome  
 

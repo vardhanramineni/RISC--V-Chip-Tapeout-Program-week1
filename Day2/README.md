@@ -33,6 +33,8 @@ This session focuses on **understanding standard cells, .lib files, and synthesi
 ---
 
 ## Hierarchical vs Flat Synthesis
+
+
 ### Hierarchical Synthesis 
 - Each submodule is synthesized separately, then connected at the top.
 - Easier debugging, reuse, and modularity.
@@ -45,7 +47,7 @@ $abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 $write_verilog hierarchical_netlist.v
 show
 ```
-
+![Alt Text](Image/hier.png)
 ### Flat Synthesis 
 - Flattens the design by removing module hierarchy.
 - Synthesizes entire design as one large netlist.
@@ -58,29 +60,20 @@ $abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 $flatten
 $show
 ```
+![Alt Text](Image/flat.png)
 
-##  Lab Work with Yosys  
+##  Various Flop Coding Styles and optimization 
 
+### Synchronous Reset (sync reset)
 
+- Reset happens only on clock edge.
+```bash
+$iverilog dff_sync.v tb_dff_sync.v -o sync.out
+$./a.out
+$gtkwave tb_dff_sync.vcd
+```
 
-
-
-
-
-
-
-
-Write synthesized netlist:  
-\`\`\`bash
-yosys> write_verilog good_mux_netlist.v
-\`\`\`
-
-Write simplified netlist:  
-\`\`\`bash
-yosys> write_verilog -noattr good_mux_netlist.v
-\`\`\`
-
----
+![Alt Text](Image/flat.png)
 
 ##  Outcome  
 

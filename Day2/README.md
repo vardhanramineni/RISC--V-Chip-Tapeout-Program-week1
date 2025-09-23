@@ -1,5 +1,5 @@
 
-
+# Day 2 -Timing libs,hierarchical vs flat synthesis and efficient flop coding styles
  
 
 This session focuses on **understanding standard cells, .lib files, and synthesis flow using Yosys** with the **Sky130 PDK**.  
@@ -8,8 +8,9 @@ This session focuses on **understanding standard cells, .lib files, and synthesi
 
 ## Table of Contents  
 - Standard Cells Overview  
-- .lib File Introduction  
-- Lab Work with Yosys  
+- .lib File Introduction
+- Hierarchical vs Flat Synthesis
+- Various Flop Coding Styles and optimization 
 - Outcome  
 
 ---
@@ -31,37 +32,40 @@ This session focuses on **understanding standard cells, .lib files, and synthesi
 
 ---
 
+## Hierarchical vs Flat Synthesis
+### Hierarchical Synthesis 
+- Each submodule is synthesized separately, then connected at the top.
+- Easier debugging, reuse, and modularity.
+```bash
+$yosys
+$read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+$read_verilog multiple_modules.v
+$synth -top top_module
+$write_verilog hierarchical_netlist.v
+show
+```
+
+### Flat Synthesis 
+- Flattens the design by removing module hierarchy.
+- Synthesizes entire design as one large netlist.
+```bash
+$yosys
+$read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+$read_verilog multiple_modules.v
+$flatten
+$show
+```
+
 ##  Lab Work with Yosys  
 
-Start yosys:  
-\`\`\`bash
-$ yosys
-\`\`\`
 
-Read the **Sky130 library**:  
-\`\`\`bash
-yosys> read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
-\`\`\`
 
-Read RTL design:  
-\`\`\`bash
-yosys> read_verilog good_mux.v
-\`\`\`
 
-Run synthesis:  
-\`\`\`bash
-yosys> synth -top good_mux
-\`\`\`
 
-Map design to standard cells:  
-\`\`\`bash
-yosys> abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
-\`\`\`
 
-View schematic:  
-\`\`\`bash
-yosys> show
-\`\`\`
+
+
+
 
 Write synthesized netlist:  
 \`\`\`bash

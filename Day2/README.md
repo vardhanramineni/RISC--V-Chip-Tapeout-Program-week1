@@ -1,6 +1,6 @@
 
 
-# ==WEEK1 DAY2==  
+ 
 
 This session focuses on **understanding standard cells, .lib files, and synthesis flow using Yosys** with the **Sky130 PDK**.  
 

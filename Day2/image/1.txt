@@ -41,6 +41,7 @@ $yosys
 $read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 $read_verilog multiple_modules.v
 $synth -top top_module
+$abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 $write_verilog hierarchical_netlist.v
 show
 ```
@@ -52,6 +53,8 @@ show
 $yosys
 $read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 $read_verilog multiple_modules.v
+$synth -top multiple_modules
+$abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 $flatten
 $show
 ```

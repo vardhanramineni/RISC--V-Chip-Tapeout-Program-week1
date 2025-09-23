@@ -1,4 +1,4 @@
-#!/bin/bash
+
 
 # ==WEEK1 DAY2==  
 
@@ -6,7 +6,7 @@ This session focuses on **understanding standard cells, .lib files, and synthesi
 
 ---
 
-## 📂 Table of Contents  
+## Table of Contents  
 - Standard Cells Overview  
 - .lib File Introduction  
 - Lab Work with Yosys  
@@ -14,14 +14,14 @@ This session focuses on **understanding standard cells, .lib files, and synthesi
 
 ---
 
-## 🔹 Standard Cells Overview  
+##  Standard Cells Overview  
 - Basic building blocks used in ASIC design (e.g., INV, AND, OR, DFF).  
 - Provided by the **Sky130 PDK** as a library.  
 - Each cell has **function, area, delay, and power** characteristics.  
 
 ---
 
-## 🔹 .lib File Introduction  
+## .lib File Introduction  
 - The `.lib` file describes standard cell characteristics:  
   - Timing arcs  
   - Power consumption  
@@ -31,7 +31,7 @@ This session focuses on **understanding standard cells, .lib files, and synthesi
 
 ---
 
-## 🛠️ Lab Work with Yosys  
+##  Lab Work with Yosys  
 
 Start yosys:  
 \`\`\`bash
@@ -75,7 +75,7 @@ yosys> write_verilog -noattr good_mux_netlist.v
 
 ---
 
-## ✅ Outcome  
+##  Outcome  
 
 By the end of **Day 2**, we have:  
 - Understood **standard cells** and **.lib files**.  

@@ -64,21 +64,52 @@ $show
 
 ##  Various Flop Coding Styles and optimization 
 
-### Synchronous Reset (sync reset)
+### Synchronous Reset
 
 - Reset happens only on clock edge.
 ```bash
-$iverilog dff_sync.v tb_dff_sync.v -o sync.out
+$iverilog dff_syncres.v tb_dff_syncres.v 
 $./a.out
-$gtkwave tb_dff_sync.vcd
+$gtkwave tb_dff_syncres.vcd
 ```
 
-![Alt Text](Image/.png)
+![Alt Text](Image/sync_reset.png)
 
+### Asynchronous  Reset 
+- Reset is applied immediately, independent of the clock.
+
+```bash
+$iverilog dff_asyncres.v tb_dff_asyncres.v 
+$./a.out
+$gtkwave tb_dff_asyncres.vcd
+```
+![Alt Text](Image/gtkwave_dff.png)
+
+### Asynchronous  Set 
+- Output responds immediately to set signal, ignoring the clock.
+
+```bash
+$iverilog dff_async_set.v tb_dff_async_set.v -o async_set.out
+$./async_set.out
+$gtkwave tb_dff_async_set.vcd
+```
+![Alt Text](Image/async_set_dff.png)
+
+```bash
+$yosys
+$read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+$read_verilog dff_async_set.v
+$synth -top dff_async_set
+$abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+$write_verilog dff_async_set_netlist.v
+$show
+```
+![Alt Text](Image/async_set.png)
 ##  Outcome  
 
 By the end of **Day 2**, we have:  
-- Understood **standard cells** and **.lib files**.  
+- Understood **standard cells** and **.lib files**.
+- Understood waveforms through **gtkwave**.
 - Performed RTL → Gate-level synthesis using **Yosys**.  
 - Generated netlist mapped to **Sky130 cells**.  
 

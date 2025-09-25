@@ -105,6 +105,11 @@ $write_verilog dff_async_set_netlist.v
 $show
 ```
 ![Alt Text](Image/async_set.png)
+
+##  Various Flop Coding Styles and optimization 
+
+![Alt Text](Image/async_set.png)
+
 ##  Outcome  
 
 By the end of **Day 2**, we have:  

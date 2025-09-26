@@ -1,139 +1,77 @@
+#!/bin/bash
+# ===============================
+# 🚀 Day 3 - Combinational & Sequential Optimizations
+# ===============================
 
+# Clean workspace
+rm -f a.out *.vcd *.dot *.svg *.json *.out *_netlist.v
 
-# Day 2 -Timing libs,hierarchical vs flat synthesis and efficient flop coding styles
- 
+echo "=================================="
+echo "📘 THEORY: Combinational Optimizations"
+echo "- Simplify Boolean equations"
+echo "- Remove redundant gates"
+echo "- Constant propagation"
+echo "=================================="
 
-This session focuses on **understanding standard cells, .lib files, and synthesis flow using Yosys** with the **Sky130 PDK**.  
+echo "📘 THEORY: Sequential Optimizations"
+echo "- Remove unused flip-flops"
+echo "- Optimize unused outputs"
+echo "- Merge equivalent registers"
+echo "=================================="
 
----
-
-## Table of Contents  
-- Standard Cells Overview  
-- .lib File Introduction
-- Hierarchical vs Flat Synthesis
-- Various Flop Coding Styles and optimization 
-- Outcome  
-
----
-
-##  Standard Cells Overview  
-- Basic building blocks used in ASIC design (e.g., INV, AND, OR, DFF).  
-- Provided by the **Sky130 PDK** as a library.  
-- Each cell has **function, area, delay, and power** characteristics.  
-
----
-
-## .lib File Introduction  
-- The `.lib` file describes standard cell characteristics:  
-  - Timing arcs  
-  - Power consumption  
-  - Area  
-  - Functionality  
-- Used by **synthesis tools** (like Yosys) to map RTL → standard cells.  
-
----
-
-## Hierarchical vs Flat Synthesis
-
-
-### Hierarchical Synthesis 
-- Each submodule is synthesized separately, then connected at the top.
-- Easier debugging, reuse, and modularity.
-```bash
-$yosys
-$read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
-$read_verilog multiple_modules.v
-$synth -top top_module
-$abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
-$write_verilog hierarchical_netlist.v
+# ===============================
+# 📌 Introduction to Optimizations (D3SK1 L1-L3)
+# ===============================
+yosys <<EOT
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog opt_intro.v
+synth -top opt_intro
+opt
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+write_verilog opt_intro_netlist.v
 show
-```
-![Alt Text](Image/hier.png)
-### Flat Synthesis 
-- Flattens the design by removing module hierarchy.
-- Synthesizes entire design as one large netlist.
-```bash
-$yosys
-$read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
-$read_verilog multiple_modules.v
-$synth -top multiple_modules
-$abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
-$flatten
-$show
-```
-![Alt Text](Image/flat.png)
+EOT
 
-##  Various Flop Coding Styles and optimization 
+# ===============================
+# 📌 Lab06 - Combinational Logic Optimisations (D3SK2 L1-L2)
+# ===============================
+yosys <<EOT
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog comb_opt.v
+synth -top comb_opt
+opt_clean
+opt_reduce
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+write_verilog comb_opt_netlist.v
+show
+EOT
 
-### Synchronous Reset
+# ===============================
+# 📌 Lab07 - Sequential Logic Optimisations (D3SK3 L1-L3)
+# ===============================
+yosys <<EOT
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog seq_opt.v
+synth -top seq_opt
+opt_clean
+opt_muxtree
+opt_share
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+write_verilog seq_opt_netlist.v
+show
+EOT
 
-- Reset happens only on clock edge.
-```bash
-$iverilog dff_syncres.v tb_dff_syncres.v 
-$./a.out
-$gtkwave tb_dff_syncres.vcd
-```
+# ===============================
+# 📌 Sequential Optimisation: Unused Outputs (D3SK4 L1-L2)
+# ===============================
+yosys <<EOT
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog seq_unused.v
+synth -top seq_unused
+opt_clean -purge
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+write_verilog seq_unused_netlist.v
+show
+EOT
 
-![Alt Text](Image/sync_reset.png)
-
-### Asynchronous  Reset 
-- Reset is applied immediately, independent of the clock.
-
-```bash
-$iverilog dff_asyncres.v tb_dff_asyncres.v 
-$./a.out
-$gtkwave tb_dff_asyncres.vcd
-```
-![Alt Text](Image/gtkwave_dff.png)
-
-### Asynchronous  Set 
-- Output responds immediately to set signal, ignoring the clock.
-
-```bash
-$iverilog dff_async_set.v tb_dff_async_set.v -o async_set.out
-$./async_set.out
-$gtkwave tb_dff_async_set.vcd
-```
-![Alt Text](Image/async_set_dff.png)
-
-```bash
-$yosys
-$read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
-$read_verilog dff_async_set.v
-$synth -top dff_async_set
-$abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
-$write_verilog dff_async_set_netlist.v
-$show
-```
-![Alt Text](Image/async_set.png)
-
-##  Various Flop Coding Styles and optimization 
-
-### DFF_sync_reset
-
-![Alt Text](Image/sync_reset.png)
-
-
-### ----------------------------------------------------------------------------------------------------------------
-
-![Alt Text](Image/async_set.png)
-
-### ----------------------------------------------------------------------------------------------------------------
-
-![Alt Text](Image/async_set_dff.png)
-
-### ----------------------------------------------------------------------------------------------------------------
-![Alt Text](Image/gtkwave_dff.png)
-
-##  Outcome  
-
-By the end of **Day 2**, we have:  
-- Understood **standard cells** and **.lib files**.
-- Understood waveforms through **gtkwave**.
-- Performed RTL → Gate-level synthesis using **Yosys**.  
-- Generated netlist mapped to **Sky130 cells**.  
-
-**Flow Recap:**  
-**RTL → .lib → Yosys → Synthesized Netlist**
-
----
+echo "✅ Day 3 flow completed: Combinational & Sequential Optimizations done."

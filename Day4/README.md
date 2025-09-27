@@ -142,6 +142,8 @@ end
 <p align="center">
   <img src="Image/bad_gls.png" alt="Bad MUX GLS GTKWave" width="700"/>
 </p>
+
+---
 **Non-blocking Assignment (`<=`)**
 
 * Updates all left-hand sides in parallel at the end of the time step.
